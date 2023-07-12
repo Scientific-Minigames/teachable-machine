@@ -57,8 +57,6 @@
                                 Let’s Go!
                             </span>
                         </a>
-                        <p class="wizard__launch-skip-paragraph">or <a href="#" class="link wizard__launch-skip"
-                                id="skip-tutorial-button">skip the tutorial</a></p>
                         <p class="wizard__browser-warning">Sorry, your browser doesn’t support the latest technologies.
                             <br>Download <a class="link" href="https://www.google.com/chrome/browser/desktop/index.html"
                                 target="_blank">Google Chrome</a> to use this and other experiments.
@@ -242,15 +240,6 @@
                 <div id="output-section" class="section section--disabled output section--output">
                     <h2 class="section__title"><span>Output</span></h2>
                     <div class="section__container">
-                        <div class="output__controls">
-                            <div class="output__selector-wrapper">
-                                <div id="GIFOutput" class="output_selector__option output_selector__option--selected">
-                                    GIF</div>
-                                <div id="SoundOutput" class="output_selector__option">Sound</div>
-                                <div id="SpeechOutput" class="output_selector__option">Speech</div>
-                            </div>
-                        </div>
-                        <div class="divider output__divider"></div>
                         <div id="output-player" class="output__player"></div>
                     </div>
                 </div>
@@ -419,7 +408,6 @@
                 typeof document.querySelector('.wizard__browser-warning').classList.forEach === 'function'
             )) {
             document.querySelector('.wizard__browser-warning').style.display = 'block';
-            document.querySelector('.wizard__launch-skip-paragraph').style.display = 'none';
             document.getElementById('start-tutorial-button').style.display = 'none';
             document.getElementById('is-compatible').style.display = 'none';
         }

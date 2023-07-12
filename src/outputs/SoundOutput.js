@@ -43,9 +43,9 @@ class SoundOutput {
 		this.assets.push('trumpet_2.mp3');
 		this.assets.push('trumpet_3.mp3');
 		this.assets.push('tuba.mp3');
-		
+
 		this.numAssets = this.assets.length;
-        window.addEventListener('mobileLaunch', this.touchAudio.bind(this));
+		window.addEventListener('mobileLaunch', this.touchAudio.bind(this));
 
 		this.defaultAssets = [];
 		this.defaultAssets[0] = 'birds.mp3';
@@ -79,7 +79,7 @@ class SoundOutput {
 		this.search = new SoundSearch(options);
 		this.offScreen.appendChild(this.search.element);
 		this.inputClasses = [];
-        this.lastSound;
+		this.lastSound;
 
 		for (let index = 0; index < this.assets.length; index += 1) {
 			let sound = this.assets[index];
@@ -133,7 +133,7 @@ class SoundOutput {
 
 			deleteIcon.addEventListener('click', this.clearInput.bind(this));
 			input.addEventListener('click', this.editInput.bind(this));
-            document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this), false);
+			document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this), false);
 			// speakerIcon.addEventListener('click', this.testSound.bind(this));
 			// this.inputClasses[index] = speakerIcon;
 			inputClass.input = input;
@@ -146,37 +146,38 @@ class SoundOutput {
 		this.buildCanvas();
 	}
 
-    handleVisibilityChange() {
-		if (GLOBALS.outputSection.currentOutput &&
+	handleVisibilityChange() {
+		if (GLOBALS.outputSection &&
+			GLOBALS.outputSection.currentOutput &&
 			GLOBALS.outputSection.currentOutput.id === 'SoundOutput'
 		) {
 			if (this.currentSound === null) {
 				this.currentSound;
-			}else if (document.hidden) {
+			} else if (document.hidden) {
 				this.currentSound.pause();
-			}else {
+			} else {
 				this.currentSound.play();
 			}
 		}
-    }
+	}
 
-    playCurrentSound() {
+	playCurrentSound() {
 		if (this.currentSound) {
 			this.currentSound.play();
 		}
 	}
 
-    pauseCurrentSound() {
+	pauseCurrentSound() {
 		if (this.currentSound) {
 			this.currentSound.pause();
 		}
-    }
+	}
 
 	clearInput(event) {
 		if (this.currentSound === this.sounds[event.target.parentNode.sound]) {
 			this.currentSound.muted = true;
-            this.currentSound = null;
-            if (this.currentIcon) {
+			this.currentSound = null;
+			if (this.currentIcon) {
 				this.currentIcon.classList.remove('output__sound-speaker--active');
 				this.currentIcon = null;
 			}
@@ -186,10 +187,10 @@ class SoundOutput {
 
 		event.target.parentNode.input.classList.add('output__sound-input--nothing');
 
-        if (this.currentBorder && this.currentClassName) {
-            this.currentBorder.classList.remove(`output__sound-input--${this.currentClassName}-selected`);
-        }
-    }
+		if (this.currentBorder && this.currentClassName) {
+			this.currentBorder.classList.remove(`output__sound-input--${this.currentClassName}-selected`);
+		}
+	}
 
 	searchResultPlayClick(event) {
 		event.stopPropagation();
@@ -204,10 +205,10 @@ class SoundOutput {
 		this.activeInput.parentNode.sound = value;
 		this.activeInput.parentNode.input.classList.remove('output__sound-input--nothing');
 		if (this.currentSound) {
-            this.currentSound.muted = true;
-            this.currentSound = null;
-        }
-        this.search.hide();
+			this.currentSound.muted = true;
+			this.currentSound = null;
+		}
+		this.search.hide();
 	}
 
 	editInput(event) {
@@ -232,7 +233,7 @@ class SoundOutput {
 	soundEnded(event) {
 		if (this.activeSpeaker) {
 			this.currentSound.muted = true;
-			this.activeSpeaker.classList.remove('output__sound-speaker--active');	
+			this.activeSpeaker.classList.remove('output__sound-speaker--active');
 		}
 		this.canTrigger = true;
 		if (this.currentSound === event.target) {
@@ -245,24 +246,24 @@ class SoundOutput {
 		}
 	}
 
-    playSound(sound) {
-        this.muteSounds();
+	playSound(sound) {
+		this.muteSounds();
 		if (!this.search.visible) {
 			if (this.currentSound === sound) {
 				this.currentSound = null;
-			}else if (this.sounds[sound]) {
+			} else if (this.sounds[sound]) {
 				this.currentSound = this.sounds[sound];
 				this.currentSound.muted = false;
 				this.currentSound.currentTime = 0;
 				this.currentSound.play();
-                this.lastSound = this.currentSound;
+				this.lastSound = this.currentSound;
 			}
 		}
-    }
+	}
 
-    muteSounds() {
+	muteSounds() {
 		if (this.currentSound) {
-            this.currentSound.muted = true;
+			this.currentSound.muted = true;
 		}
 	}
 
@@ -283,54 +284,54 @@ class SoundOutput {
 	}
 
 	trigger(index) {
-        if (!GLOBALS.clearing) {
-            if (this.currentIndex !== index) {
-                this.currentIndex = index;
+		if (!GLOBALS.clearing) {
+			if (this.currentIndex !== index) {
+				this.currentIndex = index;
 
-                let sound = this.inputClasses[this.currentIndex].sound;
-                if (sound) {
-                    this.playSound(sound);
-                }else {
-                    this.muteSounds();
-                }
+				let sound = this.inputClasses[this.currentIndex].sound;
+				if (sound) {
+					this.playSound(sound);
+				} else {
+					this.muteSounds();
+				}
 
-                if (this.currentIcon) {
-                    this.currentIcon.classList.remove('output__sound-speaker--active');
-                }
+				if (this.currentIcon) {
+					this.currentIcon.classList.remove('output__sound-speaker--active');
+				}
 
-                if (this.currentBorder && this.currentClassName) {
-                    this.currentBorder.classList.remove(`output__sound-input--${this.currentClassName}-selected`);
-                }
+				if (this.currentBorder && this.currentClassName) {
+					this.currentBorder.classList.remove(`output__sound-input--${this.currentClassName}-selected`);
+				}
 
-                let border = this.inputClasses[index].input;
-                let id = this.classNames[index];
+				let border = this.inputClasses[index].input;
+				let id = this.classNames[index];
 
-                this.currentClassName = id;
-                this.currentBorder = border;
-                this.currentBorder.classList.add(`output__sound-input--${this.currentClassName}-selected`);
+				this.currentClassName = id;
+				this.currentBorder = border;
+				this.currentBorder.classList.add(`output__sound-input--${this.currentClassName}-selected`);
 
-                this.currentIcon = this.inputClasses[this.currentIndex];
-                this.currentIcon.classList.add('output__sound-speaker--active');
-                if (this.canvas) {
-                    sound === null ? sound = '(nothing)' : sound;
-                    this.updateCanvas(this.currentIndex, sound);
-                }
+				this.currentIcon = this.inputClasses[this.currentIndex];
+				this.currentIcon.classList.add('output__sound-speaker--active');
+				if (this.canvas) {
+					sound === null ? sound = '(nothing)' : sound;
+					this.updateCanvas(this.currentIndex, sound);
+				}
 
-            }
-        }
-        if (GLOBALS.clearing) {
-            if (this.currentIcon) {
-                this.currentIcon.classList.remove('output__sound-speaker--active');
-            }
-            if (this.currentBorder && this.currentClassName) {
-                this.currentBorder.classList.remove(`output__sound-input--${this.currentClassName}-selected`);
-            }
-            for (let index = 0; index < this.numAssets; index += 1) {
-                let id = this.assets[index];
-                this.sounds[id].pause();
-            }
-        }
-    }
+			}
+		}
+		if (GLOBALS.clearing) {
+			if (this.currentIcon) {
+				this.currentIcon.classList.remove('output__sound-speaker--active');
+			}
+			if (this.currentBorder && this.currentClassName) {
+				this.currentBorder.classList.remove(`output__sound-input--${this.currentClassName}-selected`);
+			}
+			for (let index = 0; index < this.numAssets; index += 1) {
+				let id = this.assets[index];
+				this.sounds[id].pause();
+			}
+		}
+	}
 
 
 	stop() {
@@ -362,21 +363,21 @@ class SoundOutput {
 	}
 
 	updateCanvas(colorId, sound) {
-        if (sound === 'null') {
-            this.sound = ' ';
-        }
+		if (sound === 'null') {
+			this.sound = ' ';
+		}
 		let color = '#2baa5e';
 		switch (colorId) {
 			case 0:
-			color = '#2baa5e';
-			break;
+				color = '#2baa5e';
+				break;
 			case 1:
-			color = '#c95ac5';
-			break;
+				color = '#c95ac5';
+				break;
 			default:
 			case 2:
-			color = '#dd4d31';
-			break;
+				color = '#dd4d31';
+				break;
 		}
 		if (this.canvasImage) {
 			this.context.globalCompositeOperation = 'source-over';
@@ -384,9 +385,9 @@ class SoundOutput {
 			this.context.fillStyle = 'rgb(255, 255, 255)';
 			this.context.fillRect(0, 0, 300, 300);
 			this.context.drawImage(this.canvasImage, 105, 52, 95, 95);
-            this.context.font = '25px Poppins';
-            this.context.fillStyle = '#000';
-            this.context.fillText(sound, (this.canvas.width / 2 - this.context.measureText(sound).width / 2) - 20, 207);
+			this.context.font = '25px Poppins';
+			this.context.fillStyle = '#000';
+			this.context.fillText(sound, (this.canvas.width / 2 - this.context.measureText(sound).width / 2) - 20, 207);
 			this.context.globalCompositeOperation = 'screen';
 			this.context.fillStyle = color;
 			this.context.fillRect(0, 0, 300, 300);
@@ -394,15 +395,15 @@ class SoundOutput {
 	}
 
 	touchAudio() {
-        for (let key in this.sounds) {
-            /* eslint-disable */
-            if (this.sounds.hasOwnProperty(key)) {
-                this.sounds[key].play();
-                this.sounds[key].pause();
-            }
-            /* eslint-enable */
-        }
-    }
+		for (let key in this.sounds) {
+			/* eslint-disable */
+			if (this.sounds.hasOwnProperty(key)) {
+				this.sounds[key].play();
+				this.sounds[key].pause();
+			}
+			/* eslint-enable */
+		}
+	}
 }
 
 

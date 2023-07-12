@@ -29,17 +29,17 @@ import BrowserUtils from './ui/components/BrowserUtils';
 function init() {
 
 	// Shim for forEach for IE/Edge
-  if (typeof NodeList.prototype.forEach !== 'function') {
-    NodeList.prototype.forEach = Array.prototype.forEach;
+	if (typeof NodeList.prototype.forEach !== 'function') {
+		NodeList.prototype.forEach = Array.prototype.forEach;
 	}
 
-  GLOBALS.browserUtils = new BrowserUtils();
-  GLOBALS.launchScreen = new LaunchScreen();
+	GLOBALS.browserUtils = new BrowserUtils();
+	GLOBALS.launchScreen = new LaunchScreen();
 
-  GLOBALS.learningSection = new LearningSection(document.querySelector('#learning-section'));
+	GLOBALS.learningSection = new LearningSection(document.querySelector('#learning-section'));
 	GLOBALS.inputSection = new InputSection(document.querySelector('#input-section'));
 	GLOBALS.outputSection = new OutputSection(document.querySelector('#output-section'));
-  GLOBALS.recordOpener = new RecordOpener(document.querySelector('#record-open-section'));
+	GLOBALS.recordOpener = new RecordOpener(document.querySelector('#record-open-section'));
 
 	GLOBALS.inputSection.ready();
 	GLOBALS.learningSection.ready();
@@ -56,9 +56,9 @@ function init() {
 		if (!GLOBALS.browserUtils.isCompatable) {
 			document.querySelector('.wizard__browser-warning').innerHTML = 'Something went wrong and we could not load the site, please try restarting your browser.';
 		}
-	}else if (GLOBALS.browserUtils.isSafari) {
+	} else if (GLOBALS.browserUtils.isSafari) {
 		document.querySelector('.input__media__activate').innerHTML = 'To teach your machine, you need to turn on your camera. To do this click "Safari" in the menu bar, navigate to "Settings for This Website", in the "Camera" drop down menu choose "Allow" and then <a href="#">refresh the page</a>.';
-	}else if (GLOBALS.browserUtils.isFirefox) {
+	} else if (GLOBALS.browserUtils.isFirefox) {
 		document.querySelector('.input__media__activate').innerHTML = 'To teach your machine, you need to turn on your camera. To do this you need to click this icon <img class="camera-icon" src="assets/ff-camera-icon.png"> to grant access and <a href="#">refresh the page</a>.';
 	}
 }

@@ -29,15 +29,10 @@ class OutputSection {
         this.outputs = outputs;
         this.loadedOutputs = [];
 
-        let outputLinks = element.querySelectorAll('.output_selector__option');
-        outputLinks.forEach((link) => {
-            link.addEventListener('click', this.changeOutput.bind(this));
-        });
-        this.currentLink = element.querySelector('.output_selector__option--selected');
-
         this.outputContainer = document.querySelector('#output-player');
         this.currentOutput = null;
-        this.currentLink.click();
+
+        this.setOutput('SoundOutput'); // GIFOutput | SoundOutput | SpeechOutput
 
         this.arrow = new HighlightArrow(1);
 
@@ -56,7 +51,7 @@ class OutputSection {
 
     highlight() {
         this.arrow.show();
-        TweenMax.from(this.arrow.element, 0.3, {opacity: 0});
+        TweenMax.from(this.arrow.element, 0.3, { opacity: 0 });
     }
 
     dehighlight() {
@@ -76,15 +71,7 @@ class OutputSection {
         this.element.classList.remove('dimmed');
     }
 
-    changeOutput(event) {
-        if (this.currentLink) {
-            this.currentLink.classList.remove('output_selector__option--selected');
-        }
-
-        this.currentLink = event.target;
-        this.currentLink.classList.add('output_selector__option--selected');
-        let outputId = this.currentLink.id;
-
+    setOutput(outputId) {
         if (this.currentOutput) {
             this.currentOutput.stop();
             this.currentOutput = null;
@@ -99,13 +86,13 @@ class OutputSection {
             this.currentOutput.start();
         }
 
-        gtag('event', 'select_output', {'id': outputId});
+        gtag('event', 'select_output', { 'id': outputId });
     }
 
     toggleSoundOutput(play) {
         if (this.currentOutput.id === 'SoundOutput' && play) {
             GLOBALS.soundOutput.playCurrentSound();
-        }else if (this.currentOutput.id === 'SoundOutput' && !play) {
+        } else if (this.currentOutput.id === 'SoundOutput' && !play) {
             GLOBALS.soundOutput.pauseCurrentSound();
         }
     }
@@ -123,7 +110,7 @@ class OutputSection {
         this.currentOutput.trigger(index);
 
         if (this.broadcastEvents) {
-            let event = new CustomEvent('class-triggered', {detail: {id: id}});
+            let event = new CustomEvent('class-triggered', { detail: { id: id } });
             window.dispatchEvent(event);
         }
     }
