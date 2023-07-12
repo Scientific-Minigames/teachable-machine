@@ -50,6 +50,7 @@ class LaunchScreen {
             this.messageIsNotCompatible.style.display = 'block';
         }
 
+        // alter "startClick" to "skipClick":
         this.startButton.element.addEventListener('click', this.skipClick.bind(this));
         this.startButton.element.addEventListener('touchend', this.skipClick.bind(this));
     }
