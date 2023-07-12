@@ -27,9 +27,6 @@ class LaunchScreen {
         document.querySelector('.wizard__launch-skip-paragraph').style.display = 'none';
         document.querySelector('.wizard__browser-warning').style.display = 'block';
 
-        let facebookButton = document.querySelector('.intro__share-link--facebook');
-        let twitterButton = document.querySelector('.intro__share-link--twitter');
-
         let intro = document.querySelector('.intro__content-mobile');
         /*eslint-disable */
         let defaultPrevent = (event) => {
@@ -39,28 +36,6 @@ class LaunchScreen {
         intro.addEventListener('touchstart', defaultPrevent);
         intro.addEventListener('touchmove', defaultPrevent);
 
-
-        let loader = ((el) => {
-            let ajax = new XMLHttpRequest();
-            ajax.open('GET', 'assets/social-facebook.svg', true);
-            ajax.onload = (event) => {
-                el.innerHTML = ajax.responseText;
-            };
-            ajax.send();
-        })(facebookButton);
-
-        loader = ((el) => {
-            let ajax = new XMLHttpRequest();
-            ajax.open('GET', 'assets/social-twitter.svg', true);
-            ajax.onload = (event) => {
-                el.innerHTML = ajax.responseText;
-            };
-            ajax.send();
-        })(twitterButton);
-
-        facebookButton.addEventListener('click', this.openFacebookPopup.bind(this));
-        twitterButton.addEventListener('click', this.openTwitterPopup.bind(this));
-        
         if (GLOBALS.browserUtils.isCompatible === true && GLOBALS.browserUtils.isMobile === false) {
             this.startButton.element.classList.remove('button--disabled');
             document.querySelector('.wizard__launch-skip-paragraph').style.display = 'block';
@@ -70,7 +45,7 @@ class LaunchScreen {
         if (GLOBALS.browserUtils.isMobile) {
             this.messageIsCompatible.style.display = 'block';
 
-        }else {
+        } else {
             this.messageIsCompatible.style.display = 'none';
         }
 
@@ -90,7 +65,7 @@ class LaunchScreen {
         event.preventDefault();
         let url = event.currentTarget.getAttribute('href');
         /* eslint-disable space-infix-ops */
-        window.open(url, 'fbShareWindow', 'height=450, width=550, top='+(window.innerHeight/2-275)+', left='+(window.innerWidth/2-225)+',toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+        window.open(url, 'fbShareWindow', 'height=450, width=550, top=' + (window.innerHeight / 2 - 275) + ', left=' + (window.innerWidth / 2 - 225) + ',toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
         /* eslint-enable space-infix-ops */
     }
 
@@ -98,7 +73,7 @@ class LaunchScreen {
         event.preventDefault();
         let url = event.currentTarget.getAttribute('href');
         /* eslint-disable space-infix-ops */
-        window.open(url, 'fbShareWindow', 'height=450, width=600, top='+(window.innerHeight/2-150)+', left='+(window.innerWidth/2-225)+', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+        window.open(url, 'fbShareWindow', 'height=450, width=600, top=' + (window.innerHeight / 2 - 150) + ', left=' + (window.innerWidth / 2 - 225) + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
         /* eslint-enable space-infix-ops */
     }
 
@@ -107,7 +82,7 @@ class LaunchScreen {
         let intro = document.querySelector('.intro');
         let offset = intro.offsetHeight;
         GLOBALS.wizard.skip();
-        gtag('event', 'wizard_skip');        
+        gtag('event', 'wizard_skip');
 
         if (GLOBALS.browserUtils.isMobile) {
             let msg = new SpeechSynthesisUtterance();
@@ -132,7 +107,7 @@ class LaunchScreen {
 
     destroy() {
         document.body.classList.remove('no-scroll');
-        this.element.style.display = 'none';        
+        this.element.style.display = 'none';
 
     }
 
@@ -151,7 +126,7 @@ class LaunchScreen {
             y: -offset,
             onComplete: () => {
                 this.destroy();
-                GLOBALS.wizard.start();             
+                GLOBALS.wizard.start();
             }
         });
     }
