@@ -169,12 +169,8 @@ export default class WebcamClassifier {
     }
     const newMappedIndex = this.mappedButtonIndexes.indexOf(index);
     const img = tf.fromPixels(image);
-    try {
-      const logits = this.mobilenetModule.infer(img, 'conv_preds');
-      this.classifier.addExample(logits, newMappedIndex);
-    } catch (error) {
-      console.warn(error);
-    }
+    const logits = this.mobilenetModule.infer(img, 'conv_preds');
+    this.classifier.addExample(logits, newMappedIndex);
   }
 
   clear(index) {
