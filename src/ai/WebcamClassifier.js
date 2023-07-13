@@ -79,46 +79,46 @@ export default class WebcamClassifier {
   startWebcam() {
     let video = true;
     if (GLOBALS.browserUtils.isMobile) {
-      video = {facingMode: (GLOBALS.isBackFacingCam) ? 'environment' : 'user'};
+      video = { facingMode: (GLOBALS.isBackFacingCam) ? 'environment' : 'user' };
     }
 
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia(
-      {
-        video: video,
-        audio: (GLOBALS.browserUtils.isChrome && !GLOBALS.browserUtils.isMobile)
-      }).
-      then((stream) => {
-        GLOBALS.isCamGranted = true;
-        if ((GLOBALS.browserUtils.isChrome && !GLOBALS.browserUtils.isMobile)) {
-          GLOBALS.audioContext.createMediaStreamSource(stream);
-          GLOBALS.stream = stream;
-        }
-        this.activateWebcamButton.style.display = 'none';
-        this.active = true;
-        this.stream = stream;
-        this.video.addEventListener('loadedmetadata', this.videoLoaded.bind(this));
-        this.video.muted = true;
-        this.video.srcObject = stream;
-        this.video.width = 227;
-        this.video.height = 227;
-
-        let event = new CustomEvent('webcam-status', {detail: {granted: true}});
-        window.dispatchEvent(event);
-        gtag('event', 'webcam_granted');
-        this.startTimer();
-      }).
-      catch((error) => {
-        let event = new CustomEvent('webcam-status', {
-          detail: {
-            granted: false,
-            error: error
+        {
+          video: video,
+          audio: (GLOBALS.browserUtils.isChrome && !GLOBALS.browserUtils.isMobile)
+        }).
+        then((stream) => {
+          GLOBALS.isCamGranted = true;
+          if ((GLOBALS.browserUtils.isChrome && !GLOBALS.browserUtils.isMobile)) {
+            GLOBALS.audioContext.createMediaStreamSource(stream);
+            GLOBALS.stream = stream;
           }
+          this.activateWebcamButton.style.display = 'none';
+          this.active = true;
+          this.stream = stream;
+          this.video.addEventListener('loadedmetadata', this.videoLoaded.bind(this));
+          this.video.muted = true;
+          this.video.srcObject = stream;
+          this.video.width = 227;
+          this.video.height = 227;
+
+          let event = new CustomEvent('webcam-status', { detail: { granted: true } });
+          window.dispatchEvent(event);
+          gtag('event', 'webcam_granted');
+          this.startTimer();
+        }).
+        catch((error) => {
+          let event = new CustomEvent('webcam-status', {
+            detail: {
+              granted: false,
+              error: error
+            }
+          });
+          this.activateWebcamButton.style.display = 'block';
+          window.dispatchEvent(event);
+          gtag('event', 'webcam_denied');
         });
-        this.activateWebcamButton.style.display = 'block';
-        window.dispatchEvent(event);
-        gtag('event', 'webcam_denied');
-      });
     }
   }
 
@@ -143,7 +143,7 @@ export default class WebcamClassifier {
    *  so it's clear what's happening
    */
 
-  
+
   async predict(image) {
     const imgFromPixels = tf.fromPixels(image);
     const logits = this.mobilenetModule.infer(imgFromPixels, 'conv_preds');
@@ -175,7 +175,11 @@ export default class WebcamClassifier {
 
   clear(index) {
     const newMappedIndex = this.mappedButtonIndexes.indexOf(index);
-    this.classifier.clearClass(newMappedIndex);
+    try {
+      this.classifier.clearClass(newMappedIndex);
+    } catch (error) {
+      console.warn('classifier runs into error inside classifier.clearclass(index)');
+    }
   }
 
   deleteClassData(index) {
@@ -269,7 +273,7 @@ export default class WebcamClassifier {
     this.video.pause();
     cancelAnimationFrame(this.timer);
     if (GLOBALS.soundOutput && GLOBALS.soundOutput.muteSounds) {
-        GLOBALS.soundOutput.muteSounds();
+      GLOBALS.soundOutput.muteSounds();
     }
   }
 
@@ -277,7 +281,7 @@ export default class WebcamClassifier {
     // Get image data from video element
     const image = this.video;
     const exampleCount = Object.keys(this.classifier.getClassExampleCount()).length;
-    
+
     if (this.isDown) {
       this.current.imagesCount += 1;
       this.currentClass.setSamples(this.current.imagesCount);
@@ -303,7 +307,7 @@ export default class WebcamClassifier {
         if (cols === 2) {
           rows += 1;
           cols = 0;
-        }else {
+        } else {
           cols += 1;
         }
       }
@@ -314,7 +318,7 @@ export default class WebcamClassifier {
         this.train(image, this.training);
       }
 
-    }else if (exampleCount > 0) {
+    } else if (exampleCount > 0) {
       // If any examples have been added, run predict
       let measureTimer = false;
       let start = performance.now();
@@ -329,11 +333,11 @@ export default class WebcamClassifier {
         if (!GLOBALS.browserUtils.isSafari || measureTimer || !GLOBALS.browserUtils.isMobile) {
           this.lastFrameTimeMs = performance.now() - start;
           computeConfidences();
-        }else {
+        } else {
           setTimeout(computeConfidences, this.lastFrameTimeMs);
         }
 
-      }else if (image.dispose) {
+      } else if (image.dispose) {
         image.dispose();
       }
     }
