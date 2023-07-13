@@ -93,7 +93,7 @@ class OutputSection {
         if (this.currentOutput.id === 'SoundOutput' && play) {
             GLOBALS.soundOutput.playCurrentSound();
         } else if (this.currentOutput.id === 'SoundOutput' && !play) {
-            GLOBALS.soundOutput.pauseCurrentSound();
+            // GLOBALS.soundOutput.pauseCurrentSound();
         }
     }
 

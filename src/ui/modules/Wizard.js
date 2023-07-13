@@ -723,9 +723,9 @@ skip(event) {
     GLOBALS.learningSection.enableClass(1);
     GLOBALS.learningSection.enableClass(2);
     GLOBALS.learningSection.undim();
-    GLOBALS.outputSection.dehighlight();
-    GLOBALS.outputSection.enable();
-    GLOBALS.outputSection.undim();
+    // GLOBALS.outputSection.dehighlight();
+    // GLOBALS.outputSection.enable();
+    // GLOBALS.outputSection.undim();
 
     window.removeEventListener('resize', this.resizeEvent);
     window.removeEventListener('scroll', this.scrollEvent);

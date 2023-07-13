@@ -49,7 +49,7 @@ class LearningSection {
 		// this.trainingQuality = new TrainingQuality(element.querySelector('.quality'));
 
 		this.wiresLeft = new WiresLeft(document.querySelector('.wires--left'), learningClassesElements);
-		this.wiresRight = new WiresRight(document.querySelector('.wires--right'), learningClassesElements);
+		// this.wiresRight = new WiresRight(document.querySelector('.wires--right'), learningClassesElements);
 		this.highestIndex = null;
 		this.currentIndex = null;
 
@@ -88,7 +88,7 @@ class LearningSection {
 	enable(highlight) {
 		this.element.classList.remove('section--disabled');
 		this.wiresLeft.element.classList.remove('wires--disabled');
-		this.wiresRight.element.classList.remove('wires--disabled');
+		// this.wiresRight.element.classList.remove('wires--disabled');
 
 		if (highlight) {
 			this.highlight();
@@ -98,19 +98,19 @@ class LearningSection {
 	disable() {
 		this.element.classList.add('section--disabled');
 		this.wiresLeft.element.classList.add('wires--disabled');
-		this.wiresRight.element.classList.add('wires--disabled');
+		// this.wiresRight.element.classList.add('wires--disabled');
 	}
 
 	dim() {
 		this.element.classList.add('dimmed');
 		this.wiresLeft.element.classList.add('dimmed');
-		this.wiresRight.element.classList.add('dimmed');
+		// this.wiresRight.element.classList.add('dimmed');
 	}
 
 	undim() {
 		this.element.classList.remove('dimmed');
 		this.wiresLeft.element.classList.remove('dimmed');
-		this.wiresRight.element.classList.remove('dimmed');
+		// this.wiresRight.element.classList.remove('dimmed');
 	}
 
 	highlightClass(index) {
@@ -158,8 +158,8 @@ class LearningSection {
 	}
 	
 	ledOn(id) {
-		this.wiresRight.dehighlight();
-		this.wiresRight.highlight(id);
+		// this.wiresRight.dehighlight();
+		// this.wiresRight.highlight(id);
 	}
 
 	getMaxIndex(array) {
@@ -185,7 +185,7 @@ class LearningSection {
 			this.currentIndex = maxIndex;
 			let id = GLOBALS.classNames[this.currentIndex];
 			this.ledOn(id);
-			GLOBALS.outputSection.trigger(id);
+			// GLOBALS.outputSection.trigger(id);
 		}
 
 		for (let index = 0; index < 3; index += 1) {

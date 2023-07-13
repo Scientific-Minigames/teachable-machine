@@ -169,8 +169,12 @@ export default class WebcamClassifier {
     }
     const newMappedIndex = this.mappedButtonIndexes.indexOf(index);
     const img = tf.fromPixels(image);
-    const logits = this.mobilenetModule.infer(img, 'conv_preds');
-    this.classifier.addExample(logits, newMappedIndex);
+    try {
+      const logits = this.mobilenetModule.infer(img, 'conv_preds');
+      this.classifier.addExample(logits, newMappedIndex);
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   clear(index) {
@@ -178,7 +182,7 @@ export default class WebcamClassifier {
     try {
       this.classifier.clearClass(newMappedIndex);
     } catch (error) {
-      console.warn('classifier runs into error inside classifier.clearclass(index)');
+      console.warn(error);
     }
   }
 
@@ -188,7 +192,7 @@ export default class WebcamClassifier {
     this.images[this.classNames[index]].imagesCount = 0;
     this.images[this.classNames[index]].latestThumbs = [];
     this.images[this.classNames[index]].latestImages = [];
-    GLOBALS.soundOutput.pauseCurrentSound();
+    // GLOBALS.soundOutput.pauseCurrentSound();
 
     setTimeout(() => {
       GLOBALS.clearing = false;

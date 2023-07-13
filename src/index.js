@@ -38,7 +38,7 @@ function init() {
 
 	GLOBALS.learningSection = new LearningSection(document.querySelector('#learning-section'));
 	GLOBALS.inputSection = new InputSection(document.querySelector('#input-section'));
-	GLOBALS.outputSection = new OutputSection(document.querySelector('#output-section'));
+	// GLOBALS.outputSection = new OutputSection(document.querySelector('#output-section'));
 	// GLOBALS.recordOpener = new RecordOpener(document.querySelector('#record-open-section'));
 
 	GLOBALS.inputSection.ready();
