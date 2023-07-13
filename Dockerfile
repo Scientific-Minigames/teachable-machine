@@ -7,7 +7,7 @@ COPY . .
 RUN yarn run build
 
 FROM nginx:latest as production
-ENV SERVER_NAME = _
-ENV NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
-COPY ./nginx.conf /etc/nginx/templates/
-COPY --from=build /app/public /var/www/public
+COPY --from=build /app/public /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
