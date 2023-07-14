@@ -181,7 +181,7 @@ class LearningClass {
 	}
 
 	buttonUp() {
-		this.button.setText(`کلاس رنگ <br>${color2persian[this.id]} را آموزش بده`);
+		this.button.setText(`کلاس <br>${color2persian[this.id]} را آموزش بده`);
 		this.section.stopRecording();
 		clearTimeout(this.buttonClickTimeout);
 		this.button.up();
