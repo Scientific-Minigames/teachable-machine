@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function e2p(str) {
+	return String(str).replace(/\d/g, (digit) => '۰۱۲۳۴۵۶۷۸۹'[digit]);
+}
+
 class TrainingQuality {
 	constructor(element) {
 		this.element = element;
@@ -28,9 +32,9 @@ class TrainingQuality {
 
 	updatePercentage() {
 		let rounded = Math.floor(this.percentage);
-		this.percentageElement.style.width = this.percentage + '%';
-		this.percentageGrey.textContent = rounded + '%';
-		this.percentageWhite.textContent = rounded + '%';
+		this.percentageElement.style.width = e2p(this.percentage) + '٪';
+		this.percentageGrey.textContent = e2p(rounded) + '٪';
+		this.percentageWhite.textContent = e2p(rounded) + '٪';
 	}
 
 	setQuality(quality) {
@@ -49,9 +53,9 @@ class TrainingQuality {
 
 		if (percentage < 65) {
 			this.label.textContent = 'Your machine probably won’t work well';
-		}else if (percentage > 90) {
+		} else if (percentage > 90) {
 			this.label.textContent = 'Perfect!';
-		}else {
+		} else {
 			this.label.textContent = 'Looking good';
 		}
 	}

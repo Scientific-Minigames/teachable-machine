@@ -12,6 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function e2p(str) {
+	return String(str).replace(/\d/g, (digit) => '۰۱۲۳۴۵۶۷۸۹'[digit]);
+}
+const color2persian = {
+	'green': 'سبز',
+	'purple': 'بنفش',
+	'orange': 'نارنجی'
+};
+
 class LearningClass {
 	constructor(options) {
 		this.element = options.element;
@@ -96,7 +105,7 @@ class LearningClass {
 
 	highlightX() {
 		this.arrowX.show();
-		TweenMax.from(this.arrowX.element, 0.3, {opacity: 0});
+		TweenMax.from(this.arrowX.element, 0.3, { opacity: 0 });
 	}
 
 	dehighlightX() {
@@ -117,11 +126,11 @@ class LearningClass {
 
 	setSamples(length) {
 		this.exampleCounter = length;
-		let text = this.exampleCounter;	
+		let text = this.exampleCounter;
 
 		let recommendedNumSamples = (GLOBALS.inputType === 'cam') ? 30 : 10;
 
-		this.exampleCounterElement.textContent = text;
+		this.exampleCounterElement.textContent = e2p(text);
 
 		if (this.exampleCounter >= recommendedNumSamples && GLOBALS.classesTrained[this.id] === false) {
 			GLOBALS.classesTrained[this.id] = true;
@@ -130,17 +139,17 @@ class LearningClass {
 
 	setConfidence(percentage) {
 		if (!GLOBALS.clearing) {
-            // this.percentage = percentage;
-            // this.updatePercentage();
-            let that = this;
-            GLOBALS.recordSection.setMeters(this.id, percentage);
-            TweenMax.to(this, 0.5, {
-                percentage: percentage,
-                onUpdate: () => {
-                    that.updatePercentage();
-                }
-            });
-        }
+			// this.percentage = percentage;
+			// this.updatePercentage();
+			let that = this;
+			GLOBALS.recordSection.setMeters(this.id, percentage);
+			TweenMax.to(this, 0.5, {
+				percentage: percentage,
+				onUpdate: () => {
+					that.updatePercentage();
+				}
+			});
+		}
 	}
 
 	highlightConfidence() {
@@ -153,7 +162,7 @@ class LearningClass {
 
 	buttonDown() {
 		let that = this;
-		this.button.setText('Training');
+		this.button.setText('در حال آموزش');
 		this.section.startRecording(this.index);
 
 		this.buttonUpEvent = this.buttonUp.bind(this);
@@ -162,25 +171,25 @@ class LearningClass {
 		GLOBALS.recording = true;
 		GLOBALS.classId = this.id;
 
-        // GLOBALS.outputSection.toggleSoundOutput(false);
-        clearTimeout(this.buttonClickTimeout);
+		// GLOBALS.outputSection.toggleSoundOutput(false);
+		clearTimeout(this.buttonClickTimeout);
 		this.buttonClickTimeout = setTimeout(() => {
 			GLOBALS.webcamClassifier.buttonDown(this.id, this.canvas, this);
 		}, 100);
 
-		gtag('event', 'training', {'id': this.index});
+		gtag('event', 'training', { 'id': this.index });
 	}
 
 	buttonUp() {
-		this.button.setText(`Train <br>${this.id}`);
+		this.button.setText(`کلاس رنگ <br>${color2persian[this.id]} را آموزش بده`);
 		this.section.stopRecording();
-        clearTimeout(this.buttonClickTimeout);
+		clearTimeout(this.buttonClickTimeout);
 		this.button.up();
 
 		GLOBALS.classId = null;
 		GLOBALS.recording = false;
 
-        // GLOBALS.outputSection.toggleSoundOutput(true);
+		// GLOBALS.outputSection.toggleSoundOutput(true);
 
 		GLOBALS.webcamClassifier.buttonUp(this.id, this.canvas);
 
@@ -200,7 +209,7 @@ class LearningClass {
 	updatePercentage() {
 		let rounded = Math.floor(this.percentage);
 		this.percentageElement.style.width = this.percentage + '%';
-		this.percentageWhite.textContent = rounded + '%';
+		this.percentageWhite.textContent = e2p(rounded) + '٪';
 
 		if (this.timer) {
 			clearInterval(this.timer);
