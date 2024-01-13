@@ -1,6 +1,6 @@
 FROM node:latest as build
 WORKDIR /app
-COPY ./package.json ./yarn.lock ./
+COPY ./package.json ./package-lock.json ./
 RUN yarn --production
 ENV PATH="./node_modules/.bin:$PATH"
 COPY . .
