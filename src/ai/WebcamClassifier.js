@@ -46,6 +46,7 @@ export default class WebcamClassifier {
     this.thumbVideoX = 0;
     this.classNames = GLOBALS.classNames;
     this.images = {};
+    this.isModelLoaded = false;
     for (let index = 0; index < this.classNames.length; index += 1) {
       this.images[this.classNames[index]] = {
         index: index,
@@ -129,6 +130,7 @@ export default class WebcamClassifier {
 
     // Load mobilenet.
     this.mobilenetModule = await mobilenet.load();
+    this.isModelLoaded = true;
   }
 
   /**
@@ -278,11 +280,13 @@ export default class WebcamClassifier {
   }
 
   async animate() {
+    if (!this.isModelLoaded) {
+      return;
+    }
     // Get image data from video element
     const image = this.video;
     const exampleCount = Object.keys(this.classifier.getClassExampleCount()).length;
-
-    if (this.isDown) {
+    if (this.isDown && this.current.imagesCount < 20) {
       this.current.imagesCount += 1;
       this.currentClass.setSamples(this.current.imagesCount);
       if (this.current.latestThumbs.length > 8) {
