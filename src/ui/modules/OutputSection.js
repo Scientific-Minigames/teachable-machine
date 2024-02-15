@@ -85,8 +85,6 @@ class OutputSection {
             this.outputContainer.appendChild(this.currentOutput.element);
             this.currentOutput.start();
         }
-
-        gtag('event', 'select_output', { 'id': outputId });
     }
 
     toggleSoundOutput(play) {
