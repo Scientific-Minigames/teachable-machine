@@ -25,6 +25,14 @@ function passThrough() {
 
 export default class WebcamClassifier {
   constructor() {
+
+    // todo: tof - محض احتیاط 
+    setInterval(() => {
+      if (window.performance.memory.totalJSHeapSize > window.performance.memory.jsHeapSizeLimit / 2) {
+        location.reload();
+      }
+    }, 5000)
+
     this.loaded = false;
     this.video = document.createElement('video');
     this.video.setAttribute('autoplay', '');
@@ -46,7 +54,6 @@ export default class WebcamClassifier {
     this.thumbVideoX = 0;
     this.classNames = GLOBALS.classNames;
     this.images = {};
-    this.isModelLoaded = false;
     for (let index = 0; index < this.classNames.length; index += 1) {
       this.images[this.classNames[index]] = {
         index: index,
@@ -128,7 +135,6 @@ export default class WebcamClassifier {
 
     // Load mobilenet.
     this.mobilenetModule = await mobilenet.load();
-    this.isModelLoaded = true;
   }
 
   /**
@@ -145,7 +151,8 @@ export default class WebcamClassifier {
 
 
   async predict(image) {
-    const imgFromPixels = tf.fromPixels(image);
+    tf.engine().startScope()
+    const imgFromPixels = tf.browser.fromPixels(image);
     const logits = this.mobilenetModule.infer(imgFromPixels, 'conv_preds');
     const response = await this.classifier.predictClass(logits);
     const newOutput = {
@@ -159,18 +166,20 @@ export default class WebcamClassifier {
     this.mappedButtonIndexes.forEach((index, count) => {
       newOutput.confidences[index] = response.confidences[count];
     });
-
+    tf.engine().endScope()
     return newOutput;
   }
 
   train(image, index) {
+    tf.engine().startScope()
     if (this.mappedButtonIndexes.indexOf(index) === -1) {
       this.mappedButtonIndexes.push(index);
     }
     const newMappedIndex = this.mappedButtonIndexes.indexOf(index);
-    const img = tf.fromPixels(image);
+    const img = tf.browser.fromPixels(image);
     const logits = this.mobilenetModule.infer(img, 'conv_preds');
     this.classifier.addExample(logits, newMappedIndex);
+    tf.engine().endScope();
   }
 
   clear(index) {
@@ -278,9 +287,6 @@ export default class WebcamClassifier {
   }
 
   async animate() {
-    if (!this.isModelLoaded) {
-      return;
-    }
     // Get image data from video element
     const image = this.video;
     const exampleCount = Object.keys(this.classifier.getClassExampleCount()).length;
