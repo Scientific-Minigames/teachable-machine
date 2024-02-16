@@ -26,12 +26,12 @@ function passThrough() {
 export default class WebcamClassifier {
   constructor() {
 
-    // todo: tof - محض احتیاط 
+    // محض احتیاط، هر موقع که بازی بیش از نصف رم ممکن رو مصرف کرد، صفحه رفرش بشه
     setInterval(() => {
       if (window.performance.memory.totalJSHeapSize > window.performance.memory.jsHeapSizeLimit / 2) {
         location.reload();
       }
-    }, 5000)
+    }, 5000);
 
     this.loaded = false;
     this.video = document.createElement('video');
@@ -135,6 +135,14 @@ export default class WebcamClassifier {
 
     // Load mobilenet.
     this.mobilenetModule = await mobilenet.load();
+
+    // Active buttons after loading model
+    const buttons = document.getElementsByClassName('button--record');
+    for (const button of buttons) {
+      button.classList.remove('button--disabled');
+    }
+    const loader = document.getElementsByClassName('loader')[0];
+    loader.remove();
   }
 
   /**
@@ -151,7 +159,7 @@ export default class WebcamClassifier {
 
 
   async predict(image) {
-    tf.engine().startScope()
+    tf.engine().startScope();
     const imgFromPixels = tf.browser.fromPixels(image);
     const logits = this.mobilenetModule.infer(imgFromPixels, 'conv_preds');
     const response = await this.classifier.predictClass(logits);
@@ -166,12 +174,13 @@ export default class WebcamClassifier {
     this.mappedButtonIndexes.forEach((index, count) => {
       newOutput.confidences[index] = response.confidences[count];
     });
-    tf.engine().endScope()
+    tf.engine().endScope();
+
     return newOutput;
   }
 
   train(image, index) {
-    tf.engine().startScope()
+    tf.engine().startScope();
     if (this.mappedButtonIndexes.indexOf(index) === -1) {
       this.mappedButtonIndexes.push(index);
     }
